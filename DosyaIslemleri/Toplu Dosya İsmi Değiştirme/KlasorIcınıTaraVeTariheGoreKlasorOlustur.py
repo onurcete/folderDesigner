@@ -3,17 +3,24 @@ import os,time
 import shutil
 from datetime import datetime
 
+dir=os.path.dirname(os.path.abspath(__file__)) + "/Test/" #.py nin çalıştığı dizini gösterir
+#print('Dizin Giriniz:')
+#dir = input()
+#dir = dir +"/"
+
 def yearAndFileList(): 
     i = 0
     fileYearList=[]
     fileNameList=[]
-    dir=os.path.dirname(os.path.abspath(__file__)) + "/Test" #.py nin çalıştığı dizini gösterir
+    
     #os.getcwd() # working directory gösterir
     
     for filename in os.listdir(dir): 
         os.chdir(dir)
         
+        #if os.path.isfile(filename): 
         fileYearList.append(datetime.fromtimestamp(os.path.getmtime(filename)).strftime('%Y'))
+        #elif os.path.isfile(filename): 
         fileNameList.append(filename)
         i += 1
 
@@ -27,15 +34,14 @@ def yearAndFileList():
     print(returnData)
     return returnData
 
-def createFolder(yearAndFileList): 
+def createFolder(folderNames): 
     i = 0
-    dir=os.path.dirname(os.path.abspath(__file__)) + "/Test"
     
-    for yearName in yearAndFileList:
+    for yearName in folderNames:
 
         # define the name of the directory to be created
-        path = dir+"/"+yearAndFileList[i]
-        print(path)
+        path = dir+"/"+folderNames[i]
+
         try:  
             os.mkdir(path)
         except OSError:  
@@ -45,27 +51,24 @@ def createFolder(yearAndFileList):
         os.chdir(dir)
         i += 1
 
-def MoveFiles(): 
-    i = 0
+def MoveFiles(FileNames): 
 
-    dir=os.path.dirname(os.path.abspath(__file__)) + "/Test"
-    
-    for filename in os.listdir(dir): 
+    i = 0
+    for filename in FileNames: 
         os.chdir(dir)
-        shutil.move(filename, dir+"/2019")
+        #if os.path.isfile(filename): 
+        shutil.move(filename, dir+datetime.fromtimestamp(os.path.getmtime(filename)).strftime('%Y'))
         i += 1
 
 
 if __name__ == '__main__': 
 
     x=yearAndFileList()
-    y=x[0]
-    print(y)
-    
-    #print(yearLists)
+    folderNames=x[0]
+    fileNames=x[1]
 
-    createFolder(y)
-    #MoveFiles()
+    createFolder(folderNames)
+    #MoveFiles(fileNames)
     
 
     
